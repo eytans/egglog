@@ -179,8 +179,10 @@ F64: OrderedFloat<f64> = {
 Ident: Symbol = <s:r"(([[:alpha:]][\w-]*)|([-+*/?!=<>&|^/%_]))+"> => s.parse().unwrap();
 SymString: Symbol = <String> => Symbol::from(<>);
 
-String: String = <r#"("[^"]*")+"#> => {
-    let string: &str = <>;
-    let first_last_off: &str = &string[1..string.len() - 1];
-    first_last_off.replace("\"\"", "\"")
+String: String = {
+    <r#"(("[^"]*")|('[^']*'))+"#> => {
+        let string: &str = <>;
+        let first_last_off: &str = &string[1..string.len() - 1];
+        first_last_off.replace("\"\"", "\"")
+    },
 };
