@@ -133,6 +133,7 @@ fn main() {
                     }
                 }
                 Err(err) => {
+                    let mut should_exit = true;
                     let err = match err {
                         Error::ParseError(err) => err
                             .map_location(|byte_offset| {
@@ -165,10 +166,16 @@ fn main() {
                                 }
                             })
                             .to_string(),
+                        crate::Error::CheckError(ref _c_err) => {
+                            should_exit = false;
+                            err.to_string()
+                        }
                         err => err.to_string(),
                     };
                     log::error!("{}", err);
-                    std::process::exit(1)
+                    if should_exit {
+                        std::process::exit(1)
+                    }
                 }
             }
         }
