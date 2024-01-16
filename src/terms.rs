@@ -387,7 +387,7 @@ impl<'a> TermState<'a> {
     }
 
     fn instrument_rule(&mut self, ruleset: Symbol, name: Symbol, rule: &NormRule) -> Vec<Command> {
-        let rule = Rule {
+        let rule = crate::ast::Rule {
             head: self.instrument_actions(&rule.head),
             body: self.instrument_facts(&rule.body),
         };
